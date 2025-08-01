@@ -1,6 +1,6 @@
 import connectToDatabase from '@/lib/mongodb';
 import User from '@/models/user';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 export async function POST(req) {
   const { username, password } = await req.json();
