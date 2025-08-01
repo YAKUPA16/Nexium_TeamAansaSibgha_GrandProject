@@ -56,9 +56,9 @@ export default function Dashboard() {
 
           <div className="flex flex-col gap-4 w-full">
             <h2 className="text-2xl font-bold text-[#ffca52] text-left w-full mb-2">Recipe Generators</h2>
-            <Link href="/meal-match" className="w-full block text-center bg-[#f78f48] text-white py-3 rounded-md hover:bg-[#d87a60] transition-colors font-semibold text-lg">Meal Match</Link>
+            <Link href="/instant-recipe" className="w-full block text-center bg-[#f78f48] text-white py-3 rounded-md hover:bg-[#d87a60] transition-colors font-semibold text-lg">Instant Recipe</Link>
             <Link href="/recipe-of-the-day" className="w-full block text-center bg-[#ffca52] text-[#97572b] py-3 rounded-md hover:bg-[#f7b048] transition-colors font-semibold text-lg border border-[#97572b]">Recipe of the Day</Link>
-            <Link href="/random-recipe" className="w-full block text-center bg-[#b16927] text-white py-3 rounded-md hover:bg-[#97572b] transition-colors font-semibold text-lg">Random Recipe</Link>
+            <Link href="/meal-match" className="w-full block text-center bg-[#b16927] text-white py-3 rounded-md hover:bg-[#97572b] transition-colors font-semibold text-lg">Meal Match</Link>
             <Link href="/baking-tips" className="w-full block text-center bg-[#efd9be] text-[#b16927] py-3 rounded-md hover:bg-[#ffca52] transition-colors font-semibold text-lg border border-[#b16927]">Baking Tips</Link>
           </div>
 
