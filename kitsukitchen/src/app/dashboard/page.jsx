@@ -75,7 +75,7 @@ export default function Dashboard() {
         <div className="md:w-2/3 w-full flex flex-col gap-8">
           {/* Recipes Block */}
           <div className="bg-white/90 rounded-2xl p-8 shadow-xl">
-            <h1 className="text-3xl font-bold mb-4 text-[#97572b]">Welcome{user?.username ? `, ${user.username}` : "!"}</h1>
+            <h1 className="text-3xl font-bold mb-4 text-[#97572b]">Welcome, Kitchen Alchemist! ✨🔮</h1>
             <h2 className="text-xl font-bold text-[#97572b] mb-4">Your Recipes</h2>
 
             {recipes.length === 0 && (
