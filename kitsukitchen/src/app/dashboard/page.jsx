@@ -18,7 +18,7 @@ export default function Dashboard() {
   }, []);
 
   const handleAddRecipe = async () => {
-    const res = await fetch('/api/user/add-recipe', {
+    const res = await fetch('/api/auth/user/add-recipe', {
       method: 'POST',
       body: JSON.stringify({
         username: user.username,
