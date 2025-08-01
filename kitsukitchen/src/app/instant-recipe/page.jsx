@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
 
+// 🔹 Local sample recipes for testing (still usable)
 const exampleRecipes = {
   Brownies: {
     ingredients: ["1/2 cup butter", "1 cup sugar", "2 eggs", "1/3 cup cocoa", "1/2 cup flour"],
@@ -19,12 +20,53 @@ const exampleRecipes = {
 };
 
 export default function MealMatch() {
-  const [query, setQuery] = useState("");
-  const [recipe, setRecipe] = useState(null);
+  const [query, setQuery] = useState("");        // User input (e.g., "Cake")
+  const [recipe, setRecipe] = useState(null);    // The recipe to display (sample or AI-generated)
+  const [status, setStatus] = useState("");      // Status messages to show progress
 
+  // 🔹 Sends recipe name to n8n via API route
+  const sendToN8N = async (recipeName) => {
+    setStatus("Sending to n8n...");
+    try {
+      const response = await fetch("/api/send-to-n8n", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recipe: recipeName }),
+      });
+
+      if (!response.ok) throw new Error("Failed to send to n8n");
+
+      // ✅ Parse the response
+      const rawData = await response.json();
+      console.log("📦 Raw AI Recipe Response:", rawData);
+      console.log("📜 Stringified JSON:", JSON.stringify(rawData, null, 2));
+
+      // ✅ rawData is already the recipe object
+      const aiRecipe = rawData;
+
+      console.log("🍳 Parsed Recipe Object:", aiRecipe);
+
+      if (aiRecipe?.ingredients?.length && aiRecipe?.steps?.length) {
+        setRecipe(aiRecipe); // Directly set the recipe
+        setStatus(null);
+      } else {
+        setStatus(`⚠ "${recipeName}" sent, but no valid recipe returned.`);
+      }
+
+    } catch (error) {
+      console.error("❌ Error sending to n8n:", error);
+      setStatus("❌ Error sending to n8n");
+    }
+  };
+
+  // 🔹 When user clicks "Match 🍳"
   const handleSearch = () => {
+    // 1. Try local sample recipes first
     const match = exampleRecipes[query];
     setRecipe(match || null);
+
+    // 2. Always send query to n8n to try AI generation
+    sendToN8N(query);
   };
 
   return (
@@ -37,14 +79,17 @@ export default function MealMatch() {
       }}
     >
       <div className="max-w-xl w-full bg-white/80 rounded-2xl p-6 shadow-lg mt-10">
-        <h1 className="text-4xl font-bold text-[#97572b] text-center mb-4">🍽️ Meal Match</h1>
-        <p className="text-[#97572b] text-center mb-6 text-lg">Enter your favorite dish or try one of these!</p>
+        <h1 className="text-4xl font-bold text-[#97572b] text-center mb-4">🍽️ Instant Recipe</h1>
+        <p className="text-[#97572b] text-center mb-6 text-lg">
+          Enter your favorite dish or try one of these!
+        </p>
 
+        {/* 🔹 Quick buttons for sample recipes */}
         <div className="flex flex-wrap gap-2 justify-center mb-4">
           {Object.keys(exampleRecipes).map((name) => (
             <button
               key={name}
-              onClick={() => { setQuery(name); setRecipe(exampleRecipes[name]); }}
+              onClick={() => setQuery(name)} // Only fills input
               className="bg-[#f78f48] hover:bg-[#d87a60] text-white px-4 py-2 rounded-full text-sm font-semibold"
             >
               {name}
@@ -52,10 +97,11 @@ export default function MealMatch() {
           ))}
         </div>
 
+        {/* 🔹 Search box and Match button */}
         <div className="flex gap-2 mb-4">
           <input
             type="text"
-            placeholder="Enter recipe name (e.g., Brownies)"
+            placeholder="Enter recipe name (e.g., Cake)"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="flex-1 p-2 rounded-md border border-[#97572b] text-[#97572b]"
@@ -68,8 +114,12 @@ export default function MealMatch() {
           </button>
         </div>
 
+        {/* 🔹 Status message */}
+        {status && <p className="text-center mt-2">{status}</p>}
+
+        {/* 🔹 Display recipe if available */}
         {recipe ? (
-          <div className="bg-[#fff5ea] rounded-lg p-4 border border-[#b16927] text-[#97572b]">
+          <div className="bg-[#fff5ea] rounded-lg p-4 border border-[#b16927] text-[#97572b] mt-4">
             <h2 className="text-2xl font-semibold mb-2">{query} Recipe</h2>
             <p className="font-bold">Ingredients:</p>
             <ul className="list-disc list-inside mb-2">
@@ -88,6 +138,7 @@ export default function MealMatch() {
           query && <p className="text-center text-[#b16927]">No recipe found. Try another!</p>
         )}
 
+        {/* 🔹 Back button */}
         <div className="mt-6 text-center">
           <Link
             href="/dashboard"
