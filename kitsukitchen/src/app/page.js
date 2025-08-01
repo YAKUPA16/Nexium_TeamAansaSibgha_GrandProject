@@ -42,11 +42,11 @@ export default function Home() {
             alt="KitsuKitchen Logo"
             className="w-20 h-20 mb-2"
           />
-          <h1 className="text-4xl text-white font-sans tracking-wide font-bold">
+          <h1 className="text-4xl text-[#97572b] font-sans tracking-wide font-bold" style={{ textShadow: "0 0 6px rgba(255,255,255,0.8)" }}> 
             KitsuKitchen
           </h1>
-          <h2 className="mt-4 text-lg text-white">
-            Your favorite bakeing recipes, all in one place!
+          <h2 className="mt-4 text-lg text-[#5f371c]" style={{ textShadow: "0 0 6px rgba(255,255,255,0.9)" }}>
+            Your favorite recipes, all in one place!
           </h2>
         </div>
       </div>
